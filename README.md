@@ -11,6 +11,12 @@ So enter the response-test suite.
 * response-test provides a challenge phrase and executes a program based on the success of the response
 * lolsh imitates /bin/sh. Except typing "ls" results in "ls: command not found". And typing "whoami" results in "whoami: command not found". Shit, I forgot to add any commands at all except for "sh" and "exit" (which do nothing except increment/decrement a $SHELL_DEPTH variable respectively). All signals are trapped, so there's no easy killing or backgrounding or escape. Once $SHELL_DEPTH reaches 0, the program exits and kills the session leaving the user hopefully confused, frustrated, and imagining that something is simply very broken with the server.
 
+## Installation
+
+    git clone https://github.com/shitchell/response-test.git
+    cd response-test
+    sudo ./install.sh
+
 ## response-test
 Prompts the user with a challenge phrase $CHALLENGE, then reads a response. For security's sake, the correct response is stored as an md5 hash $RESPONSE_HASH. If the md5 hash of the user's response matches the predefined md5 hash, then $COMMAND_SUCCESS is executed, else $COMMAND_FAILURE is executed.
 
