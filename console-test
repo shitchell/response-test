@@ -1,11 +1,16 @@
 #!/bin/bash
 
+# Get the script directory
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+# Default values
+CHALLENGE="The sun is shining..."
+RESPONSE_HASH="cf0dee735ed650d6baca9b6a4e3fb087"
+
 function tty_command()
 {
-	# Get the script directory
-	DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 	# Run this command if the session is from a physical TTY
-	$DIR/response-test -c "? " -m "e5199316748f31141d21498a29b25a7c" -s "exit 0" -f "$DIR/lolsh $PPID"
+	$DIR/response-test -c "$CHALLENGE" -m "$RESPONSE_HASH" -s "exit 0" -f "$DIR/lolsh $PPID"
 }
 
 # systemd implements an $INVOCATION_ID for processes it spawns (including console TTYs)
