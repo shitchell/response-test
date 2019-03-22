@@ -34,3 +34,5 @@ sh | Increments $SHELL_DEPTH
 exit | Decrements $SHELL_DEPTH
 
 All signals are trapped so that the user can't kill the "shell". If and when $SHELL_DEPTH is less than or equal to 0, it kills the parent process (or whatever PID was passed as a command line parameter) and exits the program. Meant to be used in conjunction with response-test.sh as a frustrating, confusing shadowban-esque consequence for failed responses.
+
+[![asciicast](https://asciinema.org/a/S0JX1KGOvMeigNVdTHVG3liXx.svg)](https://asciinema.org/a/S0JX1KGOvMeigNVdTHVG3liXx)
