@@ -6,7 +6,7 @@ Prompts the user with a challenge phrase $CHALLENGE, then reads a response. For 
 
 Each piece can be set via command line arguments. Examples:
 
-### #*Prompts the user with "1 + 1" and tries to go easy on them if they don't enter "2"*
+#### *Prompts the user with "1 + 1" and tries to go easy on them if they don't enter "2"*
     response-test.sh -c "1 + 1 = " -m 26ab0db90d72e28ad0ba1e22ee510510 -s "Yay you can math" -f "Aww, you tried, buddy!"
 
 #### *The shadow knows...*
