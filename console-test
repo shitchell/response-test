@@ -1,9 +1,25 @@
 #!/bin/bash
 
-# systemd implements an $INVOCATION_ID for processes it spawns (including console TTYs)
-# so this should evaluate to true (mostly probably?) only for console TTYs
-if [[ -n "$INVOCATION_ID" && -n "$SHELL" ]]; then
+function tty_command()
+{
 	# Get the script directory
 	DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+	# Run this command if the session is from a physical TTY
 	$DIR/response-test -c "? " -m "e5199316748f31141d21498a29b25a7c" -s "exit 0" -f "$DIR/lolsh $PPID"
+}
+
+# systemd implements an $INVOCATION_ID for processes it spawns (including console TTYs)
+# so this should evaluate to true (mostly probably?) only for console TTYs and will run
+# if a virtual terminal is started from within a TTY
+if [[ -n "$INVOCATION_ID" && -n "$SHELL" ]]; then
+	tty_command
+	exit 0
 fi
+
+# I don't know if it would ever be possible to login through a
+# physical console and not have $SHELL or $INVOCATION_ID set?
+# But I'm paranoid. And environment variables aren't always reliable.
+# So we also test the tty device.
+case $(tty) in /dev/tty[0-9]*)
+	tty_command ;;
+esac
