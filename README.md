@@ -26,7 +26,6 @@ systemd implements an $INVOCATION_ID for all processes it spawns, including TTYs
 ## lolsh.sh ##
 Pseudo, mock shell that imitates /bin/sh. Except that all entered commands are met with "$cmd: command not found". The user may type these 4 things:
 
-User Types | Action
 ------------ | -------------
 sh | Increments $SHELL_DEPTH
 /bin/sh | Increments $SHELL_DEPTH
