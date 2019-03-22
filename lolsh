@@ -1,0 +1,68 @@
+#!/bin/bash
+
+if [[ -n "$1" ]]; then
+	PID=$1
+else
+	PID=$PPID
+fi
+
+PROMPT="$ "
+SHELL_DEPTH=1
+
+trap its_a_trap 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31
+
+function its_a_trap()
+{
+	echo -n ''
+#	echo -n "$PROMPT"
+}
+
+function new_shell()
+{
+	let SHELL_DEPTH++
+	sleep 0.5
+}
+
+function exit_shell()
+{
+	let SHELL_DEPTH--
+	if [[ "$1" == "eof" ]]; then
+		echo
+	fi
+
+	if [[ $SHELL_DEPTH -le 0 ]]; then
+		die ded
+	fi
+}
+
+function die()
+{
+	kill -9 $PID 2>/dev/null
+	exit 0
+}
+
+while :; do
+	# Prompt the user
+	read -p "$PROMPT" cmd
+	status="$?"
+
+	# Strip away any "comments"
+	cmd="$(echo $cmd | sed 's/#.*//')"
+
+	if [[ "$cmd" == "exit" ]]; then
+		# "Exit" the current "shell" (decrement the shell depth)
+		exit_shell
+	elif [[ "$status" -eq 1 ]]; then
+		# ^D / EOF causes read to exit with a status code of 1
+		# Other... things? might cause that as well...?
+		# Dunno, I just assume that if $? is 1 then the user hit ^D
+		exit_shell eof
+	elif [[ "$cmd" == "sh" || "$cmd" == "/bin/sh" ]]; then
+		# Increment the shell depth
+		new_shell
+	elif [[ -n "$cmd" ]]; then
+		# Tell the user that the command wasn't found
+		arr=($cmd)
+		echo "${arr[0]}: command not found"
+	fi
+done

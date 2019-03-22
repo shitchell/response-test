@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# systemd implements an $INVOCATION_ID for processes it spawns (including console TTYs)
+# so this should evaluate to true (mostly probably?) only for console TTYs
+if [[ -n "$INVOCATION_ID" && -n "$SHELL" ]]; then
+	# Get the script directory
+	DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+	$DIR/response-test -c "? " -m "e5199316748f31141d21498a29b25a7c" -s "exit 0" -f "$DIR/lolsh $PPID"
+fi

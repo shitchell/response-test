@@ -1,0 +1,65 @@
+#!/bin/bash
+
+trap cmd_fail 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31
+
+# Get the script directory
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+# Challenge phrase
+CHALLENGE="The sun is shining... "
+
+# Correct response hash
+RESPONSE_HASH="bba672abfde9120d8cc000bb113ffb50"
+
+# Command to execute on sucess
+COMMAND_SUCCESS="exit 0"
+
+# Command to execute on failure
+COMMAND_FAILURE="$DIR/lolsh $PPID"
+
+show_help()
+{
+	echo "Usage: $(basename $0) [-h] [-c challenge] [-m response-md5sum] [-s sucess-command] [-f fail-command]"
+}
+
+cmd_sucess()
+{
+	bash -c "$COMMAND_SUCESS"
+}
+
+cmd_fail()
+{
+	bash -c "$COMMAND_FAILURE"
+}
+
+hashify()
+{
+	md5hash="$(echo $@ | md5sum | awk -F ' ' '{print $1}')"
+	echo "$md5hash"
+}
+
+# Get command line options to set the challenge and command
+while getopts "hc:s:f:m:" opt; do
+	case "$opt" in
+		h)	show_help
+			exit 0
+			;;
+		c)	CHALLENGE="$OPTARG"
+			;;
+		s)	COMMAND_SUCESS="$OPTARG"
+			;;
+		f)	COMMAND_FAILURE="$OPTARG"
+			;;
+		m)	RESPONSE_HASH="$OPTARG"
+			;;
+	esac
+done
+
+# Prompt the user to enter a test response
+read -p "$CHALLENGE" t
+md5hash="$(hashify $t)"
+if [[ "$md5hash" == "$RESPONSE_HASH" ]]; then
+	cmd_sucess
+else
+	cmd_fail
+fi
