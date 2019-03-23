@@ -3,7 +3,7 @@ Various scripts that can be used in conjunction or individually. Meant to provid
 
 ![But Why](https://i.giphy.com/media/1M9fmo1WAFVK0/giphy.webp)
 
-A few months ago I sold a phone on eBay. Even though I factory reset it, someone managed to recover whatever they needed off of it to get past the **2 factor authentication** protecting my Google account. They had access to all of the passwords I'd saved through Google, which included the login for my VPS host. That host offers a web based console with which you can login as if from a physical TTY (which means it ignores any sshd rules about disabling remote root login). So a quick email to reset my root password (another feature of the host), and they were happily on my VPS with full root access. I have no idea what they did; as soon as I got on and tried to lock them out, they took notice. They deleted everything. My stupid ass didn't have a full backup.
+A few months ago I sold a phone on eBay. Even though I factory reset it, someone managed to recover whatever they needed off of it to get past the **2 factor authentication** protecting my Google account. They had access to all of the passwords I'd saved through Google, which included the login for my VPS host. That host offers a web based console with which you can login as if from a physical TTY (which means it ignores any sshd rules about disabling remote root login). So a quick email to reset my  root password (another feature of the host), and they were happily on my VPS with full root access. I have no idea what they did; as soon as I got on and tried to lock them out, they took notice. They deleted everything. My stupid ass didn't have a full backup.
 
 So enter the response-test suite.
 
@@ -52,3 +52,9 @@ sh | Increments $SHELL_DEPTH
 exit | Decrements $SHELL_DEPTH
 
 Typing "sh" or "/bin/sh" also calls "sleep 0.5" for a slight delay giving an appearance of legitimately spawning a new subshell. All signals are trapped so that the user can't kill the "shell". If and when $SHELL_DEPTH is less than or equal to 0, it kills the parent process (or whatever PID was passed as a command line parameter) and exits the program. Meant to be used in conjunction with response-test as a frustrating, confusing shadowban-esque consequence for failed responses. If the challenge phrase used by response-text is suitably subtle, a failed response combined with lolsh will give the appearance of successfully logging in to a very broken system rather than being locked out.
+
+
+# So why not just use a chroot, VM, or any other number of established, vetted solutions?
+Because I'm lazy. I didn't feel like installing and setting up a chroot or VM, so I opted instead to spend spend several more hours than I would have to implement my own solution, making it mediocrely polished for all of the other users who won't install it. See the below graph to clear up any remaining confusion:
+
+[![time spent automating](http://imgs.xkcd.com/comics/automation.png)
